@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:3002/
+
+# @name create_task
+POST {{baseUrl}}/task
+Content-Type: application/json
+
+{
+    "title": "New Task",
+    "description": "This is a new task."
+}
