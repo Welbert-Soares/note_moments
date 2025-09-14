@@ -16,7 +16,7 @@ export class TaskController {
     try {
       const { completed, priority, overdue } = req.query;
 
-      // ✅ Validação e tipagem rigorosa conforme enum do Prisma
+      // Validação e tipagem rigorosa conforme enum do Prisma
       const validPriorities: Priority[] = Object.values(Priority);
       const parsedPriority = typeof priority === 'string' && validPriorities.includes(priority as Priority) 
         ? priority as Priority 
@@ -250,6 +250,4 @@ export class TaskController {
       });
     }
   };
-
-  // ... outros métodos seguem o mesmo padrão
 }

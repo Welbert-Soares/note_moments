@@ -41,16 +41,13 @@ export class TaskService {
   }
 
   async updateTask(id: string, data: UpdateTaskRequest): Promise<Task | null> {
-    // Verificar se existe
     const existingTask = await this.taskRepository.findById(id);
     if (!existingTask) {
       return null;
     }
 
-    // ✅ Usar Prisma.TaskUpdateInput para tipagem correta
     const updateData: Prisma.TaskUpdateInput = {};
 
-    // ✅ Usar validações do TaskModel que respeitam o schema
     TaskModel.validateUpdateData(data);
 
     if (data.title !== undefined) {
@@ -81,7 +78,6 @@ export class TaskService {
   }
 
   async deleteTask(id: string): Promise<boolean> {
-    // Verificar se pode ser deletada (regra de negócio)
     const task = await this.taskRepository.findById(id);
     if (!task) {
       return false;

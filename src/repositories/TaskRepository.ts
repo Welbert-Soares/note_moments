@@ -17,7 +17,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async create(data: CreateTaskData): Promise<Task> {
-    // ✅ Usar dados diretamente, já validados pelo TaskModel
+    // Usar dados diretamente, já validados pelo TaskModel
     return await this.prisma.task.create({
       data: {
         title: data.title,
@@ -36,7 +36,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async findAll(filters?: TaskFilters): Promise<Task[]> {
-    // ✅ Usar tipos do Prisma para where clause
+    // Usar tipos do Prisma para where clause
     const where: Prisma.TaskWhereInput = {};
 
     if (filters?.completed !== undefined) {
@@ -91,7 +91,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async count(filters?: TaskFilters): Promise<number> {
-    // ✅ Usar tipos do Prisma para where clause
+    // Usar tipos do Prisma para where clause
     const where: Prisma.TaskWhereInput = {};
 
     if (filters?.completed !== undefined) {

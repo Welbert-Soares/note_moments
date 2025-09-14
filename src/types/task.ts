@@ -3,7 +3,7 @@ import { Task as PrismaTask, Priority } from "@prisma/client";
 export type Task = PrismaTask;
 export { Priority };
 
-// ✅ Interface para entrada de dados (do frontend)
+// Interface para entrada de dados (do frontend)
 export interface CreateTaskRequest {
   title: string;                                    // obrigatório no schema
   description?: string;                             // opcional no schema (String?)
@@ -12,7 +12,7 @@ export interface CreateTaskRequest {
   pixel_reward?: string;                            // opcional no schema (String?)
 }
 
-// ✅ Interface para atualização (todos opcionais exceto validações específicas)
+// Interface para atualização (todos opcionais exceto validações específicas)
 export interface UpdateTaskRequest {
   title?: string;                                   // String no schema (se fornecido, não pode ser vazio)
   description?: string | null;                      // String? no schema (pode ser null)

@@ -4,7 +4,7 @@ import { CreateTaskRequest, UpdateTaskRequest } from "@/types/task";
 import { CreateTaskData } from "@/repositories/interfaces/ITaskRepository";
 
 export class TaskModel {
-  // ✅ Validações baseadas no schema Prisma
+  // Validações baseadas no schema Prisma
   static validateTitle(title: string): void {
     if (!title?.trim()) {
       throw new Error("Título da tarefa é obrigatório");  // campo obrigatório no schema
@@ -41,7 +41,7 @@ export class TaskModel {
   }
 
   static validatePriority(priority: Priority): void {
-    // ✅ Usar enum do Prisma diretamente
+    // Usar enum do Prisma diretamente
     const validPriorities: Priority[] = Object.values(Priority);
     if (!validPriorities.includes(priority)) {
       throw new Error(`Prioridade inválida. Use: ${validPriorities.join(', ')}`);
@@ -49,7 +49,6 @@ export class TaskModel {
   }
 
   static validatePixelReward(pixelReward: string): void {
-    // pixel_reward é String? no schema
     if (pixelReward && pixelReward.length > 100) {
       throw new Error("Pixel reward deve ter no máximo 100 caracteres");
     }
@@ -88,7 +87,7 @@ export class TaskModel {
     };
   }
 
-    // ✅ Parsing dos dados do frontend com validações do schema
+    // Parsing dos dados do frontend com validações do schema
   static parseCreateData(data: CreateTaskRequest): CreateTaskData {
     // Validações obrigatórias baseadas no schema
     this.validateTitle(data.title);
@@ -110,13 +109,13 @@ export class TaskModel {
       this.validateDueDate(dueDate);
     }
 
-    // ✅ Retornar objeto tipado conforme CreateTaskData (que reflete o schema)
+    // Retornar objeto tipado conforme CreateTaskData (que reflete o schema)
     const result: CreateTaskData = {
       title: data.title.trim(),
       priority: data.priority || Priority.MEDIUM,  // padrão do schema
     };
 
-    // ✅ Só adicionar campos opcionais se tiverem valor
+    // Só adicionar campos opcionais se tiverem valor
     if (data.description?.trim()) {
       result.description = data.description.trim();
     }
@@ -132,7 +131,7 @@ export class TaskModel {
     return result;
   }
 
-  // ✅ Validar dados de update conforme schema
+  // Validar dados de update conforme schema
   static validateUpdateData(data: UpdateTaskRequest): void {
     if (data.title !== undefined) {
       this.validateTitle(data.title);
@@ -155,7 +154,5 @@ export class TaskModel {
       const dateToValidate = new Date(data.dueDate);
       this.validateDueDate(dateToValidate);
     }
-
-    // completed é Boolean no schema, não precisa validação especial
   }
 }
