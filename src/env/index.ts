@@ -1,20 +1,28 @@
 import "dotenv/config";
 
 
+function getEnvVar(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Environment variable ${name} is not defined`);
+  }
+  return value;
+}
+
+
 export const env = {
   // Server
-  PORT: parseInt(process.env.PORT || '3002'),
-  NODE_ENV: process.env.NODE_ENV || 'development',
-  
+  PORT: parseInt(getEnvVar("PORT")),
+
   // CORS
-  ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3002'],
-  
+  ALLOWED_ORIGINS: getEnvVar("ALLOWED_ORIGINS").split(",") || [
+    "http://localhost:3002",
+  ],
+
+  // Database
+  DATABASE_URL: getEnvVar("DATABASE_URL"),
+
   // Helpers
-  get isDevelopment() {
-    return this.NODE_ENV === 'development';
-  },
-  
-  get isProduction() {
-    return this.NODE_ENV === 'production';
-  }
+  isDevelopment: process.env.NODE_ENV === "development",
+  isProduction: process.env.NODE_ENV === "production",
 } as const;
