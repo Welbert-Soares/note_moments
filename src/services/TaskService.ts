@@ -1,9 +1,10 @@
 // src/services/TaskService.ts
-import { Task } from "@prisma/client";
+import { Task, Prisma } from "@prisma/client";
 
 import {
   ITaskRepository,
   TaskFilters,
+  UpdateTaskData,
 } from "@/repositories/interfaces/ITaskRepository";
 import { TaskModel } from "@/models/Task";
 import { CreateTaskRequest, UpdateTaskRequest } from "@/types/task";
@@ -46,11 +47,13 @@ export class TaskService {
       return null;
     }
 
-    // Validações se fornecidas
-    const updateData: any = {};
+    // ✅ Usar Prisma.TaskUpdateInput para tipagem correta
+    const updateData: Prisma.TaskUpdateInput = {};
+
+    // ✅ Usar validações do TaskModel que respeitam o schema
+    TaskModel.validateUpdateData(data);
 
     if (data.title !== undefined) {
-      TaskModel.validateTitle(data.title);
       updateData.title = data.title.trim();
     }
 
@@ -63,16 +66,15 @@ export class TaskService {
     }
 
     if (data.priority !== undefined) {
-      TaskModel.validatePriority(data.priority);
       updateData.priority = data.priority;
     }
 
     if (data.dueDate !== undefined) {
-      const dueDate = data.dueDate ? new Date(data.dueDate) : null;
-      if (dueDate) {
-        TaskModel.validateDueDate(dueDate);
-      }
-      updateData.dueDate = dueDate;
+      updateData.dueDate = data.dueDate ? new Date(data.dueDate) : null;
+    }
+
+    if (data.pixel_reward !== undefined) {
+      updateData.pixel_reward = data.pixel_reward?.trim() || null;
     }
 
     return await this.taskRepository.update(id, updateData);

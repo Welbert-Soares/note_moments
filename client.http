@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3002
-@taskId = cmfj45d1n0000u06gkxveheh5
+@taskId = cmfj4tugc0000u0oki2mgzgl5
 
 ### 1. Estatísticas das tarefas
 # @name get_task_stats
@@ -11,7 +11,7 @@ GET {{baseUrl}}/tasks
 
 ### 3. Listar tarefas filtradas
 # @name get_filtered_tasks
-GET {{baseUrl}}/tasks?completed=false&priority=HIGH
+GET {{baseUrl}}/tasks?completed=false&priority=MEDIUM
 
 ### 4. Criar nova tarefa
 # @name create_task
@@ -36,8 +36,8 @@ PUT {{baseUrl}}/tasks/{{taskId}}
 Content-Type: application/json
 
 {
-  "title": "Implementar autenticação JWT",
-  "description": "Adicionar sistema de login com JWT e refresh tokens",
+  "title": "Tarefa atualizada de teste",
+  "description": "Descrição atualizada da tarefa de teste",
   "priority": "MEDIUM",
   "completed": false
 }
@@ -65,7 +65,7 @@ Content-Type: application/json
 
 ### 11. Filtrar por prioridade
 # @name filter_by_priority
-GET {{baseUrl}}/tasks?priority=LOW
+GET {{baseUrl}}/tasks?priority=MEDIUM
 
 ### 12. Filtrar tarefas em atraso
 # @name filter_overdue_tasks

@@ -1,26 +1,22 @@
-import { Task, Priority } from "@prisma/client";
+import { Task, Priority, Prisma } from "@prisma/client";
 
+// ✅ Usando tipos do Prisma que refletem exatamente o schema
 export interface CreateTaskData {
-  title: string;
-  description?: string | null; 
-  dueDate?: Date | null; 
-  priority?: Priority;
-  pixel_reward?: string | null; 
+  title: string;                                    // obrigatório no schema
+  description?: string | null;                      // String? no schema
+  dueDate?: Date | null;                            // DateTime? no schema  
+  priority?: Priority;                              // enum Priority (padrão MEDIUM)
+  pixel_reward?: string | null;                     // String? no schema
 }
 
-export interface UpdateTaskData {
-  title?: string;
-  description?: string | null; 
-  completed?: boolean;
-  dueDate?: Date | null; 
-  priority?: Priority;
-  pixel_reward?: string | null; 
-}
+// ✅ Para updates, usamos o tipo gerado pelo Prisma
+export type UpdateTaskData = Prisma.TaskUpdateInput;
 
+// ✅ Filtros tipados conforme o schema
 export interface TaskFilters {
-  completed?: boolean | undefined; 
-  priority?: Priority | undefined; 
-  overdue?: boolean | undefined; 
+  completed?: boolean | undefined;              // Boolean no schema
+  priority?: Priority | undefined;              // enum Priority
+  overdue?: boolean | undefined;                // computed field baseado em dueDate
 }
 
 export interface ITaskRepository {

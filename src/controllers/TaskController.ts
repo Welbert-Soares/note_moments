@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 
 import { TaskService } from "@/services/TaskService";
-import { CreateTaskRequest, UpdateTaskRequest } from "@/types/task";
+import { CreateTaskRequest, UpdateTaskRequest, Priority } from "@/types/task";
 import { TaskModel } from "@/models/Task";
 
 export class TaskController {
@@ -16,6 +16,12 @@ export class TaskController {
     try {
       const { completed, priority, overdue } = req.query;
 
+      // ✅ Validação e tipagem rigorosa conforme enum do Prisma
+      const validPriorities: Priority[] = Object.values(Priority);
+      const parsedPriority = typeof priority === 'string' && validPriorities.includes(priority as Priority) 
+        ? priority as Priority 
+        : undefined;
+
       const filters = {
         completed:
           completed === "true"
@@ -23,7 +29,7 @@ export class TaskController {
             : completed === "false"
             ? false
             : undefined,
-        priority: priority as any,
+        priority: parsedPriority,
         overdue: overdue === "true",
       };
 

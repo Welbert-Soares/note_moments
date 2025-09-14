@@ -1,5 +1,5 @@
 // src/repositories/TaskRepository.ts
-import { PrismaClient, Task, Priority } from "@prisma/client";
+import { PrismaClient, Task, Priority, Prisma } from "@prisma/client";
 
 import {
   ITaskRepository,
@@ -17,11 +17,12 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async create(data: CreateTaskData): Promise<Task> {
+    // ✅ Usar dados diretamente, já validados pelo TaskModel
     return await this.prisma.task.create({
       data: {
         title: data.title,
         description: data.description ?? null,
-        priority: data.priority || Priority.MEDIUM,
+        priority: data.priority ?? Priority.MEDIUM,  // padrão do schema
         dueDate: data.dueDate ?? null,
         pixel_reward: data.pixel_reward ?? null
       },
@@ -35,7 +36,8 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async findAll(filters?: TaskFilters): Promise<Task[]> {
-    const where: any = {};
+    // ✅ Usar tipos do Prisma para where clause
+    const where: Prisma.TaskWhereInput = {};
 
     if (filters?.completed !== undefined) {
       where.completed = filters.completed;
@@ -46,7 +48,10 @@ export class TaskRepository implements ITaskRepository {
     }
 
     if (filters?.overdue) {
-      where.AND = [{ completed: false }, { dueDate: { lt: new Date() } }];
+      where.AND = [
+        { completed: false }, 
+        { dueDate: { lt: new Date() } }
+      ];
     }
 
     return await this.prisma.task.findMany({
@@ -86,7 +91,8 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async count(filters?: TaskFilters): Promise<number> {
-    const where: any = {};
+    // ✅ Usar tipos do Prisma para where clause
+    const where: Prisma.TaskWhereInput = {};
 
     if (filters?.completed !== undefined) {
       where.completed = filters.completed;
@@ -97,7 +103,10 @@ export class TaskRepository implements ITaskRepository {
     }
 
     if (filters?.overdue) {
-      where.AND = [{ completed: false }, { dueDate: { lt: new Date() } }];
+      where.AND = [
+        { completed: false }, 
+        { dueDate: { lt: new Date() } }
+      ];
     }
 
     return await this.prisma.task.count({ where });
