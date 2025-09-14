@@ -1,10 +1,124 @@
-@baseUrl = http://localhost:3002/
+@baseUrl = http://localhost:3002
+@taskId = cmfj4tugc0000u0oki2mgzgl5
 
+### 1. Estatísticas das tarefas
+# @name get_task_stats
+GET {{baseUrl}}/tasks/stats/overview
+
+### 2. Listar todas as tarefas
+# @name get_all_tasks
+GET {{baseUrl}}/tasks
+
+### 3. Listar tarefas filtradas
+# @name get_filtered_tasks
+GET {{baseUrl}}/tasks?completed=false&priority=MEDIUM
+
+### 4. Criar nova tarefa
 # @name create_task
-POST {{baseUrl}}/task
+POST {{baseUrl}}/tasks
 Content-Type: application/json
 
 {
-    "title": "New Task",
-    "description": "This is a new task."
+  "title": "Implementar autenticação",
+  "description": "Adicionar sistema de login e registro de usuários",
+  "priority": "HIGH",
+  "dueDate": "2025-09-20T00:00:00.000Z",
+  "pixel_reward": "100 pontos"
 }
+
+### 5. Buscar tarefa por ID
+# @name get_task_by_id
+GET {{baseUrl}}/tasks/{{taskId}}
+
+### 6. Atualizar tarefa
+# @name update_task
+PUT {{baseUrl}}/tasks/{{taskId}}
+Content-Type: application/json
+
+{
+  "title": "Tarefa atualizada de teste",
+  "description": "Descrição atualizada da tarefa de teste",
+  "priority": "MEDIUM",
+  "completed": false
+}
+
+### 7. Marcar tarefa como concluída
+# @name mark_task_completed
+PATCH {{baseUrl}}/tasks/{{taskId}}/complete
+
+### 8. Duplicar tarefa
+# @name duplicate_task
+POST {{baseUrl}}/tasks/{{taskId}}/duplicate
+
+### 9. Deletar tarefa
+# @name delete_task
+DELETE {{baseUrl}}/tasks/{{taskId}}
+
+### 10. Criar tarefa simples
+# @name create_simple_task
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Tarefa simples de teste"
+}
+
+### 11. Filtrar por prioridade
+# @name filter_by_priority
+GET {{baseUrl}}/tasks?priority=MEDIUM
+
+### 12. Filtrar tarefas em atraso
+# @name filter_overdue_tasks
+GET {{baseUrl}}/tasks?overdue=true
+
+### 13. Filtrar tarefas completadas
+# @name filter_completed_tasks
+GET {{baseUrl}}/tasks?completed=true
+
+### 14. Criar tarefa com data de vencimento
+# @name create_task_with_due_date
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Revisar código do projeto",
+  "description": "Fazer code review das funcionalidades implementadas",
+  "priority": "MEDIUM",
+  "dueDate": "2025-09-15T23:59:59.000Z",
+  "pixel_reward": "50 pontos"
+}
+
+### 15. Criar tarefa de alta prioridade
+# @name create_high_priority_task
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Corrigir bug crítico",
+  "description": "Bug que está impedindo deploy em produção",
+  "priority": "HIGH",
+  "dueDate": "2025-09-14T18:00:00.000Z",
+  "pixel_reward": "200 pontos"
+}
+
+### 16. Teste de health check (básico)
+# @name health_check
+GET {{baseUrl}}/tasks
+
+###
+# INSTRUÇÕES DE USO:
+# 
+# 1. Inicie o servidor: npm run dev
+# 2. Execute primeiro: " 1. Estatísticas das tarefas" ou " 2. Listar todas as tarefas"
+# 3. Para testar com IDs específicos:
+#    - Execute " 4. Criar nova tarefa"
+#    - Copie o ID da resposta
+#    - Cole na variável @taskId no topo do arquivo
+#    - Execute os testes que precisam de ID
+# 
+# DICAS:
+# - Use Ctrl+Alt+R (ou Cmd+Alt+R) para executar requests no VS Code
+# - Instale a extensão "REST Client" se não tiver
+# - Os filtros podem ser combinados: ?completed=false&priority=HIGH&overdue=true
+# - Datas devem estar no formato ISO 8601
+###
